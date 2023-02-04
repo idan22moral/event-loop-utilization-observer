@@ -1,73 +1,7 @@
 const CDP = require('chrome-remote-interface');
 const jsonschema = require('jsonschema');
 const eluEventSchema = require('./alert.schema.json');
-
-class ELUNotifierOptions {
-    /**
-     * @type {number}
-     */
-    eluThreshold;
-    /**
-     * @type {number}
-     */
-    sampleIntervalMilliseconds;
-}
-
-function ELUNotifier(callback, options) {
-    if (typeof callback !== 'function') {
-        throw TypeError('\'callback\' must be a function');
-    }
-    const eluThreshold = typeof options?.eluThreshold === 'number' ? options.eluThreshold : 0.1;
-    const sampleIntervalMilliseconds = typeof options?.sampleIntervalMilliseconds === 'number' ? options.sampleIntervalMilliseconds : 200;
-
-    let previousELU = performance.eventLoopUtilization();
-    const intervalId = setInterval(() => {
-        const currentELU = performance.eventLoopUtilization();
-        const deltaELU = performance.eventLoopUtilization(currentELU, previousELU);
-        previousELU = currentELU;
-        if (deltaELU.utilization >= eluThreshold) {
-            callback(deltaELU);
-        }
-    }, sampleIntervalMilliseconds);
-
-    return function clearObserver() {
-        clearInterval(intervalId);
-    };
-}
-
-exports.ELUObserver = class ELUObserver {
-    /**
-     * @type {Function}
-     */
-    #callback;
-    /**
-     * @type {Function[]}
-     */
-    #disconnectors = [];
-
-    /**
-     * @param {Function} callback 
-     */
-    constructor(callback) {
-        if (typeof callback !== 'function') {
-            throw TypeError('callback must be a function');
-        }
-
-        this.#callback = callback;
-    }
-
-    /**
-     * @param {ELUNotifierOptions} options 
-     */
-    observe(options) {
-        this.#disconnectors.push(ELUNotifier(this.#callback, options));
-    }
-
-    disconnect() {
-        this.#disconnectors.forEach(x => x());
-        this.#disconnectors = [];
-    }
-}
+const { ELUNotifier, ELUNotifierOptions } = require('./notifier');
 
 exports.RemoteELUObserver = class RemoteELUObserver {
     #observerId;
@@ -230,5 +164,3 @@ exports.RemoteELUObserver = class RemoteELUObserver {
         }
     }
 }
-
-exports = module.exports;

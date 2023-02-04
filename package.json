@@ -21,7 +21,7 @@
     "event-loop",
     "observer"
   ],
-  "main": "observer.js",
+  "main": "./src/index.js",
   "dependencies": {
     "chrome-remote-interface": "^0.32.0",
     "jsonschema": "^1.4.1"
