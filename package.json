@@ -1,0 +1,29 @@
+{
+  "name": "event-loop-utilization-observer",
+  "version": "0.1.0",
+  "description": "Get event loop utilization samples from a Node.js process (local or remote)",
+  "author": "Idan Moral",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/idan22moral/event-loop-utilization-observer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/idan22moral/event-loop-utilization-observer/issues"
+  },
+  "keywords": [
+    "cpu",
+    "usage",
+    "metrics",
+    "monitor",
+    "node",
+    "utilization",
+    "event-loop",
+    "observer"
+  ],
+  "main": "observer.js",
+  "dependencies": {
+    "chrome-remote-interface": "^0.32.0",
+    "jsonschema": "^1.4.1"
+  }
+}

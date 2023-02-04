@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["type", "details"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["elu-alert"]
+    },
+    "details": {
+      "type": "object",
+      "required": ["idle", "active", "utilization"],
+      "properties": {
+        "idle": {
+          "type": "number"
+        },
+        "active": {
+          "type": "number"
+        },
+        "utilization": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
